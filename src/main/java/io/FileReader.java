@@ -75,7 +75,12 @@ public class FileReader {
 
 	public static boolean exists(String file) 
     {
-		File f = new File(file);
-        return f.exists();
+        try {
+            File f = new File(file);
+            return f.exists();
+        } catch (Exception e) 
+        {
+            return false;
+        }
 	}
 }
