@@ -1,19 +1,19 @@
-package disinterface.util;
+package frontsnapk1ck.disinterface.util;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import disterface.MessageData;
-import disterface.MessageData.Destination;
-import disterface.util.template.Template;
+import frontsnapk1ck.disterface.MessageData;
+import frontsnapk1ck.disterface.MessageData.Destination;
+import frontsnapk1ck.disterface.util.template.Template;
+import frontsnapk1ck.utility.Util;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.MessageChannel;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import utility.Util;
 
 public class InterfaceProtocol {
 

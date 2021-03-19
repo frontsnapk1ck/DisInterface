@@ -1,4 +1,4 @@
-package disinterface.main;
+package frontsnapk1ck.disinterface.main;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -6,11 +6,11 @@ import java.util.Map;
 
 import javax.security.auth.login.LoginException;
 
-import disinterface.util.DIServerUtil;
-import disinterface.util.InterfaceProtocol;
-import disinterface.util.Level;
-import disterface.util.DIUtil;
-import io.FileReader;
+import frontsnapk1ck.disinterface.util.DIServerUtil;
+import frontsnapk1ck.disinterface.util.InterfaceProtocol;
+import frontsnapk1ck.disinterface.util.Level;
+import frontsnapk1ck.disterface.util.DIUtil;
+import frontsnapk1ck.io.FileReader;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;

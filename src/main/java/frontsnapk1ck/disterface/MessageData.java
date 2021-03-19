@@ -1,10 +1,10 @@
-package disterface;
+package frontsnapk1ck.disterface;
 
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.List;
 
-import disterface.util.template.Template;
+import frontsnapk1ck.disterface.util.template.Template;
 
 public class MessageData implements Serializable {
 

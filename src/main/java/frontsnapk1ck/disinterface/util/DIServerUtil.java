@@ -1,6 +1,6 @@
-package disinterface.util;
+package frontsnapk1ck.disinterface.util;
 
-import disterface.util.DIUtil;
+import frontsnapk1ck.disterface.util.DIUtil;
 
 public class DIServerUtil extends DIUtil {
 

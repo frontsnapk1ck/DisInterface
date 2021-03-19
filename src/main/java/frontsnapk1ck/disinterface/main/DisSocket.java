@@ -1,4 +1,4 @@
-package disinterface.main;
+package frontsnapk1ck.disinterface.main;
 
 import java.io.IOException;
 import java.net.InetAddress;

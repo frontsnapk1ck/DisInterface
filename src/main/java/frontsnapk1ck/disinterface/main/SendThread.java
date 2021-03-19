@@ -1,4 +1,4 @@
-package disinterface.main;
+package frontsnapk1ck.disinterface.main;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
-import disterface.MessageData;
+import frontsnapk1ck.disterface.MessageData;
 
 public class SendThread extends Thread {
 

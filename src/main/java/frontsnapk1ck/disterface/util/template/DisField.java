@@ -1,4 +1,4 @@
-package disterface.util.template;
+package frontsnapk1ck.disterface.util.template;
 
 import java.io.Serializable;
 

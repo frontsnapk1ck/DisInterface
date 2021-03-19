@@ -1,4 +1,4 @@
-package disterface.util.constants;
+package frontsnapk1ck.disterface.util.constants;
 
 public interface DIConstants {
 

@@ -1,4 +1,4 @@
-package disinterface.util;
+package frontsnapk1ck.disinterface.util;
 
 import java.io.Serializable;
 

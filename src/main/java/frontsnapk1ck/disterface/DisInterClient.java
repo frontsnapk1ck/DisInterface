@@ -1,4 +1,4 @@
-package disterface;
+package frontsnapk1ck.disterface;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -7,9 +7,9 @@ import java.io.OutputStream;
 import java.net.Socket;
 import java.util.Scanner;
 
-import disterface.MessageData.Destination;
-import disterface.util.DIUtil;
-import disterface.util.template.Template;
+import frontsnapk1ck.disterface.MessageData.Destination;
+import frontsnapk1ck.disterface.util.DIUtil;
+import frontsnapk1ck.disterface.util.template.Template;
 
 public class DisInterClient {
 
