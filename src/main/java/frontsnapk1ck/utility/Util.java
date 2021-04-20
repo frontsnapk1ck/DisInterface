@@ -8,29 +8,63 @@ import java.util.Set;
 
 public class Util {
 
-    public static int parseInt(String num) throws NumberFormatException {
-        try {
+    public static int parseInt(String num) throws NumberFormatException 
+    {
+        try
+        {
             return Integer.parseInt(num);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) 
+        {
             throw e;
         }
     }
 
-    public static int parseInt(String num, int defaultNum) {
-        try {
+    public static int parseInt(String num, int defaultNum) 
+    {
+        try
+        {
             return Integer.parseInt(num);
-        } catch (Exception e) {
+        }
+        catch (Exception e) 
+        {
             return defaultNum;
         }
     }
 
-    public static <T> List<T> copy(List<T> put, List<? extends T> from) {
+    public static long parseLong(String num) throws NumberFormatException 
+    {
+        try
+        {
+            return Long.parseLong(num);
+        }
+        catch (NumberFormatException e) 
+        {
+            throw e;
+        }
+    }
+
+    public static long parseLong(String num, long defaultNum) 
+    {
+        try
+        {
+            return Long.parseLong(num);
+        }
+        catch (Exception e) 
+        {
+            return defaultNum;
+        }
+    }
+
+    public static <T> List<T> copy(List<T> put, List<? extends T> from) 
+    {
         for (T obj : from)
             put.add(obj);
         return put;
     }
 
-    public static <H, K> Map<H, K> copy(Map<H, K> put, Map<? extends H, ? extends K> from) {
+    public static <H, K> Map<H, K> copy(Map<H, K> put, Map<? extends H, ? extends K> from) 
+    {
         Set<? extends H> keys = from.keySet();
         for (H key : keys)
             put.put(key, from.get(key));
@@ -38,7 +72,8 @@ public class Util {
         return put;
     }
 
-    public static <T> List<T> arrayToList(T[] arr) {
+    public static <T> List<T> arrayToList(T[] arr) 
+    {
         List<T> list = new ArrayList<T>();
         if (arr == null || arr.length == 0)
             return list;
@@ -49,7 +84,8 @@ public class Util {
         return list;
     }
 
-    public static <T> T[] addOneToArray(T[] arr) {
+    public static <T> T[] addOneToArray(T[] arr) 
+    {
         List<T> list = new ArrayList<T>();
         for (T t : arr)
             list.add(t);
@@ -58,20 +94,39 @@ public class Util {
         return newArr;
     }
 
-    public static boolean validInt(String num) {
-        try {
+    public static boolean validInt(String num) 
+    {
+        try 
+        {
             parseInt(num);
             return true;
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) 
+        {
             return false;
         }
     }
 
-    public static <T> T[] arrRange(T[] arr, int beginIndex) {
+    public static boolean validLong(String num) 
+    {
+        try 
+        {
+            parseLong(num);
+            return true;
+        }
+        catch (NumberFormatException e) 
+        {
+            return false;
+        }
+    }
+
+    public static <T> T[] arrRange(T[] arr, int beginIndex) 
+    {
         return arrRange(arr, beginIndex, arr.length);
     }
 
-    private static <T> T[] arrRange(T[] arr, int beginIndex, int endIndex) {
+    private static <T> T[] arrRange(T[] arr, int beginIndex, int endIndex) 
+    {
         List<T> list = new ArrayList<T>();
         for (int i = beginIndex; i < endIndex; i++)
             list.add(arr[i]);
@@ -96,6 +151,5 @@ public class Util {
         }
 
 	}
-
 
 }

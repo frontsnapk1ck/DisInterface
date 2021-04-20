@@ -1,6 +1,7 @@
 package frontsnapk1ck.disinterface.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,7 +9,6 @@ import java.util.Map;
 import frontsnapk1ck.disterface.MessageData;
 import frontsnapk1ck.disterface.MessageData.Destination;
 import frontsnapk1ck.disterface.util.template.Template;
-import frontsnapk1ck.utility.Util;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.entities.Guild;
@@ -28,15 +28,15 @@ public class InterfaceProtocol {
 
     private Map<Destination, MessageChannel> makeChannels() 
     {
-        final long ALLOY_ID = 771814337420460072L;
+        final long SERVER_ID = 833530318790459412L;
         final long DM_ID = 312743142828933130L;
 
-        final long ERROR_ID = 805626387100467210L;
-        final long DEBUG_ID = 809178603345805352L;
-        final long WARN_ID  = 809178564452417548L;
-        final long INFO_ID  = 809178584635277332L;
+        final long ERROR_ID = 833530319097430093L;
+        final long DEBUG_ID = 833530319097430094L;
+        final long WARN_ID  = 833530319097430095L;
+        final long INFO_ID  = 833530319407546368L;
 
-        Guild g = jda.getGuildById(ALLOY_ID);
+        Guild g = jda.getGuildById(SERVER_ID);
 
         Map<Destination , MessageChannel> logs = new HashMap<Destination,MessageChannel>();
         logs.put(Destination.ERROR , g.getTextChannelById( ERROR_ID ));
@@ -82,33 +82,37 @@ public class InterfaceProtocol {
     private List<MessageEmbed> getEmbeds(Template t) 
     {
         List<MessageEmbed> embeds = new ArrayList<MessageEmbed>();
-        try {
-            embeds.add(t.getEmbed());
-        } catch (Exception ex) 
+
+        String[] arr = t.getText().split("\n");
+        List<String> roArray = Arrays.asList(arr);
+        List<String> list = new ArrayList<String>(roArray);
+        String title = list.get(0);
+        
+        int lastIndex = list.size() -1;
+        if (list.get( lastIndex ).equals("null"))
+            list.remove( lastIndex );
+
+        List<String> newLines = list.subList(1, list.size());
+
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle(title);
+
+        String out = "";
+        for (int i = 0; i < newLines.size(); i++) 
         {
-            String[] arr = t.getText().split("\n");
-            String title = arr[0];
-            String[] newLines = Util.arrRange(arr, 1);
-
-            EmbedBuilder eb = new EmbedBuilder();
-            eb.setTitle(title);
-
-            String out = "";
-            for (int i = 0; i < newLines.length; i++) 
+            String tmp = out + newLines.get(i) + "\n";
+            if (tmp.length() > MessageEmbed.TEXT_MAX_LENGTH)
             {
-                String tmp = out + newLines[i] + "\n";
-                if (tmp.length() > MessageEmbed.TEXT_MAX_LENGTH)
-                {
-                    eb.setDescription(out);
-                    embeds.add(eb.build());
-                    out = newLines[i];
-                }
-                else
-                    out = tmp;
+                eb.setDescription(out);
+                embeds.add(eb.build());
+                out = newLines.get(i);
             }
-            eb.setDescription(out);
-            embeds.add(eb.build());
+            else
+                out = tmp;
         }
+        eb.setDescription(out);
+        embeds.add(eb.build());
+        
         return embeds;
     }
 }

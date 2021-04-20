@@ -11,6 +11,7 @@ import frontsnapk1ck.disinterface.util.InterfaceProtocol;
 import frontsnapk1ck.disinterface.util.Level;
 import frontsnapk1ck.disterface.util.DIUtil;
 import frontsnapk1ck.io.FileReader;
+import frontsnapk1ck.utility.logger.Logger;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.Guild;
@@ -21,7 +22,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 
 public class DisInterface {
 
-    public static long startupTimeStamp;
+    public static final Logger LOGGER = new Logger();
 
     private static JDA jda;
     private static InterfaceProtocol protocol;
@@ -52,7 +53,6 @@ public class DisInterface {
 
     private void config() 
     {
-        DisInterface.startupTimeStamp = System.currentTimeMillis();
         DisInterface.protocol = new InterfaceProtocol(getJda());
         try 
         {
@@ -61,38 +61,38 @@ public class DisInterface {
         }
         catch (IOException e)
         {
-            System.out.println("Exception caught when trying to listen on port " + DIUtil.PORT + " or listening for a connection");
-            System.out.println(e.getMessage());
+            LOGGER.error("DisInterface", "Exception caught when trying to listen on port " + DIUtil.PORT + " or listening for a connection\t" + e.getMessage());
         }
     }  
 
     private void start() throws LoginException 
     {
         String key = loadKey();
-        jda = JDABuilder.createDefault(key).enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .setMemberCachePolicy(MemberCachePolicy.ALL).setChunkingFilter(ChunkingFilter.ALL).build();
+        jda = JDABuilder.createDefault(key)
+                        .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                        .setMemberCachePolicy(MemberCachePolicy.ALL)
+                        .setChunkingFilter(ChunkingFilter.ALL)
+                        .build();
     }
 
     private String loadKey() 
     {
-        String[] keyA;
+        String keyA = "";
         if ( FileReader.exists(DIServerUtil.KEY_FILE) )
-            keyA = FileReader.read(DIServerUtil.KEY_FILE);
-        else if ( FileReader.exists(DIServerUtil.KEY_FILE_PI));
-            keyA = FileReader.read(DIServerUtil.KEY_FILE_PI);
-        return keyA[0];
+            keyA = FileReader.read(DIServerUtil.KEY_FILE)[0];
+        else if ( FileReader.exists(DIServerUtil.KEY_FILE_PI))
+            keyA = FileReader.read(DIServerUtil.KEY_FILE_PI)[0];
+        return keyA;
     }
 
-    public static long getStartupTimeStamp() {
-        return startupTimeStamp;
-    }
-
-    private void cooldown(int seconds) {
-        try {
+    private void cooldown(int seconds) 
+    {
+        try
+        {
             Thread.sleep(seconds * 1000);
         }
-
-        catch (InterruptedException e) {
+        catch (InterruptedException e)
+        {
             e.printStackTrace();
         }
     }

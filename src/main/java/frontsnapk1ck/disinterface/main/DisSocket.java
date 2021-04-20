@@ -12,7 +12,7 @@ public class DisSocket {
     public DisSocket(int port, int backlog, InetAddress bindAddr) throws IOException 
     {
         this.server = new ServerSocket(port, backlog, bindAddr);
-        System.out.println("server is listening at " + bindAddr.getHostAddress() + " on port " + port );
+        DisInterface.LOGGER.info("DisSocket", "server is listening at " + bindAddr.getHostAddress() + " on port " + port);
 	}
     
     public InetAddress getSocketAddress() {
@@ -35,7 +35,7 @@ public class DisSocket {
             }
             catch (IOException e)
             {
-                System.out.println("DisSocket.listen() FAILED");
+                DisInterface.LOGGER.info("DisSocket", "DisSocket.listen() FAILED");
             }
         }
     

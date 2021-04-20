@@ -6,16 +6,19 @@ import java.io.ObjectInputStream;
 import java.net.Socket;
 import java.net.SocketException;
 
+import frontsnapk1ck.disterface.DisClientName;
 import frontsnapk1ck.disterface.MessageData;
 
 public class SendThread extends Thread {
 
     private Socket client;
     private boolean running;
+    private String name;
 
     public SendThread(Socket client) throws IOException 
     {
         this.client = client;
+        this.name = "UNNAMED";
         config();
 	}
 
@@ -41,9 +44,23 @@ public class SendThread extends Thread {
         {
             final BufferedInputStream bis = new BufferedInputStream(client.getInputStream());
             Object obj = readBytes(bis);
+            if (obj instanceof DisClientName)
+                setName((DisClientName)obj);
             if (obj instanceof MessageData)
                 send((MessageData) obj); 
         }
+    }
+
+    private void setName(DisClientName name) 
+    {
+        String oldName = getAppName();
+
+        this.name = name.getName();
+        String ip = client.getInetAddress().getHostAddress();
+    
+        this.setName(getAppName() + " | " +  ip);
+    
+        DisInterface.LOGGER.info("SendThread", "The app " + oldName + " has changed its name to " + name.getName());
     }
 
     private Object readBytes(BufferedInputStream bis) 
@@ -70,17 +87,24 @@ public class SendThread extends Thread {
 
     private void send(MessageData data) 
     {
-        System.out.println(client.getInetAddress().getHostAddress() + " sent a message to " + data.getDestination() );
+        String ip = client.getInetAddress().getHostAddress();
+        String destination = String.valueOf(data.getDestination());
+
+        DisInterface.LOGGER.debug("SendThread", "The app " + getAppName() + " running on " + ip + " sent a message to " +  destination );
+
         DisInterface.getProtocol().processInput(data);
     }
 
     private void config() 
     {
         this.setDaemon(true);
-        String name = "connection from " + client.getInetAddress().getHostName() + " | " +  client.getInetAddress().getHostAddress();
+
+        String ip = client.getInetAddress().getHostAddress();
+
+        String name =  getAppName() + " | " +  ip;
 
         String clientAddress = client.getInetAddress().getHostAddress();
-        System.out.println("\r\nNew connection from " + clientAddress);
+        DisInterface.LOGGER.info("SendThread", "New connection from app " + getAppName() + " running on " + clientAddress);
 
         this.setName(name);
         this.makeShutdown();
@@ -88,7 +112,9 @@ public class SendThread extends Thread {
 
     private void makeShutdown() 
     {
-        String name = "shutdown hook " + client.getInetAddress().getHostName() + " | " +  client.getInetAddress().getHostAddress();
+        String ip = client.getInetAddress().getHostAddress();
+        String name =  getAppName() + " | " +  ip;
+        
         Runtime.getRuntime().addShutdownHook(
             new Thread(
                 new Runnable()
@@ -97,11 +123,16 @@ public class SendThread extends Thread {
                     public void run() 
                     {
                         String clientAddress = client.getInetAddress().getHostAddress();
-                        System.err.println(clientAddress + " disconnected");
+                        DisInterface.LOGGER.info("SendThread", "App " + getAppName() + " running on " + clientAddress + " disconnected");
                     }
                 }
                 , name)
             );
+    }
+
+    protected String getAppName()
+    {
+        return name;
     }
 
     public void stopRunning()

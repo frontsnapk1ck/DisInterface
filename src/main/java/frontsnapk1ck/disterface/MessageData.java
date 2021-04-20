@@ -40,25 +40,11 @@ public class MessageData implements Serializable {
 
     public enum Destination 
     {
-        DM("DM"),
-        INFO("INFO"),
-        WARN("WARN"),
-        DEBUG("DEBUG"),
-        ERROR("ERROR"),;
-
-        private String id;
-
-        private Destination(String name) 
-        {
-            this.id = name;
-        }
-
-        @Override
-        public String toString() 
-        {
-            return id;
-        }
-
+        DM,
+        INFO,
+        WARN,
+        DEBUG,
+        ERROR,
     }
     
 }

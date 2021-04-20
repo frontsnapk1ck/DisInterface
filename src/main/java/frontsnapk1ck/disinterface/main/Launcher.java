@@ -11,7 +11,7 @@ public class Launcher {
     }
 
     private static String findVersion() {
-        return "0.1.5";
+        return "0.2.0";
     }
 
     public static void main(String[] args) 
@@ -25,12 +25,14 @@ public class Launcher {
         System.out.println("Launched DisInterface with version " + Launcher.VERSION);
     }
 
-    private void launchAll(String[] args) {
-        try {
+    private void launchAll(String[] args)
+    {
+        try
+        {
             interf = new DisInterface();
             updateActivityRunnable();
-        } catch (Exception e) {
-            return;
+        }
+        catch (Exception ignored) {
         }
     }
 

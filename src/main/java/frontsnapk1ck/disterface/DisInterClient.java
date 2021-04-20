@@ -4,45 +4,47 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.Socket;
-import java.util.Scanner;
 
-import frontsnapk1ck.disterface.MessageData.Destination;
 import frontsnapk1ck.disterface.util.DIUtil;
-import frontsnapk1ck.disterface.util.template.Template;
 
 public class DisInterClient {
 
-    private Socket socket;
-    private Scanner scanner;
+    private DisClient socket;
 
-    public DisInterClient() throws IOException {
-        System.out.println("client is connecting to " + DIUtil.ADDRESS.getHostAddress() + " on port " + DIUtil.PORT);
-        this.socket = new Socket(DIUtil.ADDRESS, DIUtil.PORT);
-        System.out.println("client connected to " + DIUtil.ADDRESS.getHostAddress() + " on port " + DIUtil.PORT);
-        this.scanner = new Scanner(System.in);
-        start();
+    public DisInterClient(String name) throws IOException 
+    {
+        tellConnecting();
+        this.socket = new DisClient(DIUtil.ADDRESS, DIUtil.PORT , name );
+        sendName();
+        tellConnected();
     }
 
-    private void start() throws IOException 
+    protected void tellConnected() 
     {
-        String input;
-        while (true) 
-        {
-            input = scanner.nextLine();
+        System.out.println("client connected to " + DIUtil.ADDRESS.getHostAddress() + " on port " + DIUtil.PORT);
+    }
 
-            Template t = new Template("", input);
-            MessageData data = new MessageData( t , Destination.DM);
-            byte[] bytes = convertToBytes(data);
+    protected void tellConnecting() 
+    {
+        System.out.println("client is connecting to " + DIUtil.ADDRESS.getHostAddress() + " on port " + DIUtil.PORT);
+    }
 
-            OutputStream out = this.socket.getOutputStream();
-            out.write(bytes);
-            System.err.println("sent " + bytes.length + " bytes to the server");
+    public void send(MessageData data) throws IOException 
+    {
+        send((Object)data);
+    }
 
-            // PrintWriter out = new PrintWriter(this.socket.getOutputStream(), true);
-            // out.println(input);
-            // out.flush();
-        }
+    protected void sendName() throws IOException 
+    {
+        send(socket.getName());
+    }
+
+    private void send(Object obj) throws IOException 
+    {
+        byte[] bytes = convertToBytes(obj);
+
+        OutputStream out = this.socket.getOutputStream();
+        out.write(bytes);
     }
 
     private byte[] convertToBytes(Object object) throws IOException
