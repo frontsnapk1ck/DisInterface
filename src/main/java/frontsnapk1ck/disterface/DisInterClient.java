@@ -1,9 +1,7 @@
 package frontsnapk1ck.disterface;
 
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 
 import frontsnapk1ck.disterface.util.DIUtil;
 
@@ -41,24 +39,8 @@ public class DisInterClient {
 
     private void send(Object obj) throws IOException 
     {
-        byte[] bytes = convertToBytes(obj);
-
-        OutputStream out = this.socket.getOutputStream();
-        out.write(bytes);
+       final ObjectOutputStream oos = new ObjectOutputStream(this.socket.getOutputStream());
+       oos.writeObject(obj);
     }
-
-    private byte[] convertToBytes(Object object) throws IOException
-    {
-        try 
-        (
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(bos)
-        ) 
-        {
-            out.writeObject(object);
-            return bos.toByteArray();
-        }
-    }
-    
     
 }

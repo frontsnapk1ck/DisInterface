@@ -11,7 +11,7 @@ public class Launcher {
     }
 
     private static String findVersion() {
-        return "0.2.0";
+        return "0.3.1";
     }
 
     public static void main(String[] args) 

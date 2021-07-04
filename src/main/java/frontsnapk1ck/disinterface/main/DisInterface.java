@@ -61,7 +61,7 @@ public class DisInterface {
         }
         catch (IOException e)
         {
-            LOGGER.error("DisInterface", "Exception caught when trying to listen on port " + DIUtil.PORT + " or listening for a connection\t" + e.getMessage());
+            LOGGER.error("DisInterface", "Exception caught when trying to listen on port " + DIUtil.PORT + " or listening for a connection\n\t" + e.getMessage());
         }
     }  
 

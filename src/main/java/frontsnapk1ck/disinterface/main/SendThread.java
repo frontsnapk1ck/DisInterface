@@ -1,10 +1,9 @@
 package frontsnapk1ck.disinterface.main;
 
-import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.net.Socket;
-import java.net.SocketException;
+import java.util.UUID;
 
 import frontsnapk1ck.disterface.DisClientName;
 import frontsnapk1ck.disterface.MessageData;
@@ -18,7 +17,7 @@ public class SendThread extends Thread {
     public SendThread(Socket client) throws IOException 
     {
         this.client = client;
-        this.name = "UNNAMED";
+        this.name = UUID.randomUUID().toString();
         config();
 	}
 
@@ -28,7 +27,8 @@ public class SendThread extends Thread {
         this.running = true;
         try 
         {
-            operate(this.client);
+            while (running)
+                operate(this.client);
         }
         catch (IOException e) 
         {
@@ -36,19 +36,21 @@ public class SendThread extends Thread {
                 return;
             e.printStackTrace();
         }
+        catch (ClassNotFoundException e)
+        {
+            DisInterface.LOGGER.error("Send Thread", "Object Class Not Found");
+            e.printStackTrace();
+        }
     }
 
-    private void operate(Socket client) throws IOException 
+    private void operate(Socket client) throws IOException, ClassNotFoundException 
     {
-        while (running)
-        {
-            final BufferedInputStream bis = new BufferedInputStream(client.getInputStream());
-            Object obj = readBytes(bis);
-            if (obj instanceof DisClientName)
-                setName((DisClientName)obj);
-            if (obj instanceof MessageData)
-                send((MessageData) obj); 
-        }
+        final ObjectInputStream ois = new ObjectInputStream(client.getInputStream());
+        Object obj = ois.readObject();
+        if (obj instanceof DisClientName)
+            setName((DisClientName)obj);
+        if (obj instanceof MessageData)
+            send((MessageData) obj); 
     }
 
     private void setName(DisClientName name) 
@@ -61,28 +63,6 @@ public class SendThread extends Thread {
         this.setName(getAppName() + " | " +  ip);
     
         DisInterface.LOGGER.info("SendThread", "The app " + oldName + " has changed its name to " + name.getName());
-    }
-
-    private Object readBytes(BufferedInputStream bis) 
-    {
-        try 
-        {
-            ObjectInputStream in = new ObjectInputStream(bis);
-            return in.readObject();
-        }
-        catch (IOException | ClassNotFoundException e) 
-        {
-            if (e instanceof SocketException)
-            {
-                this.running = false;
-                final SocketException exception = (SocketException)e;
-                String out = this.client.getInetAddress().getHostAddress() + " " +exception.getLocalizedMessage();
-                System.out.println(out);
-            }
-            else
-                e.printStackTrace();
-            return null;
-        }
     }
 
     private void send(MessageData data) 

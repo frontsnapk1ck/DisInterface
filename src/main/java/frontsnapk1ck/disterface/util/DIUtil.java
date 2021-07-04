@@ -12,7 +12,7 @@ public class DIUtil implements DIConstants {
     static {
         try 
         {
-            ADDRESS = InetAddress.getByName("192.168.1.102");
+            ADDRESS = InetAddress.getByName("192.168.15.1");
         }
         catch (UnknownHostException e) 
         {
